@@ -1,0 +1,60 @@
+from nltk.tokenize import TweetTokenizer
+from nltk.stem.snowball import SnowballStemmer
+from nltk.tokenize import TweetTokenizer as tlkk
+from nltk.corpus import stopwords as stp
+from nltk.stem import LancasterStemmer as nlstem
+
+stp=set(stp.words('portuguese'))
+stemmer=SnowballStemmer('portuguese')
+h=tlkk()
+
+#divisão de tres bibliotecas, a primeira de base para correção de palavras, seguido de uma para correção de prefixos e uma terceira para
+# mostrar as palavras chaves de emergencia
+#tk = TweetTokenizer() #função de quebra
+x=input("")#entrada de string
+f=h.tokenize(x)#quebra do texto
+print(f)
+y=f
+
+a={}
+a["e ai"]="então"
+a["Eai"]="ola"
+a["Eae"]="ola"
+a["man"]="colega"
+a["aki"]="aqui"
+a["ta"]="esta"
+a["Ta"]="Esta"
+a["a pé"]="andando"
+a["dog"]="Cachorro"
+a["e ai"]="{Espreção que antecede a pessoa e/ou o verbo de ação}"
+
+for i in range(len(f)):
+    if f[i] in a:
+        f[i]=a[f[i]]
+
+
+
+b={}
+b["mãe"]="mãe"
+b["coração"]="coração"
+
+c={"fogo","animal","queimada"}
+
+#for i in range(len(f)):
+    #if f[i] in c:
+        #print("perigo extremo")
+
+l=([palavra for palavra in f if palavra not in stp]) #tira todas stop words
+print(f, l)
+
+#for i in range(len(l)):
+ #   l[i] = stemmer.stem(l[i])  # todo prefixo como: ExtramENTE, ousadamENTE,socialMENTE é tirado
+
+for i in range(len(l)):
+    if (l[i] not in b):
+        for n in range(len(l)):
+            l[i]=stemmer.stem(l[i])#todo prefixo como: ExtramENTE, ousadamENTE,socialMENTE é tirado
+    elif(l[i]in b):
+        l[i]=b[l[i]]
+
+print(f, l)
